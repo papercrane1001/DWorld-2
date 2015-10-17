@@ -13,7 +13,7 @@ namespace DWorld_2
 
     public class Tile_Image
     {
-        public int tileSize = 20;
+        public int tileSize = 15;
 
         public Bitmap defaultImage = new Bitmap(20, 20);
         public string tileType;
@@ -50,7 +50,7 @@ namespace DWorld_2
     {
         public List<List<Tile_Image>> tileImSet = new List<List<Tile_Image>>();
         public Bitmap visMap;
-        public int tilesize = 20;
+        public int tilesize = 15;
 
         public VisibleMap(Map map)
         {

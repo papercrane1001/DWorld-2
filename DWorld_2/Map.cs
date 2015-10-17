@@ -53,7 +53,7 @@ namespace DWorld_2
                 foreach(Tile t in tList) { flatList.Add(t); }
             }
             foreach(Tile t in flatList.Where(z => !z.isWall)) { openSpace.Add(t); }
-
+            
             #endregion
 
         }
@@ -80,7 +80,7 @@ namespace DWorld_2
             Coordinates nextCoord = new Coordinates(startCoord.x, startCoord.y);
             int[] directionHelper = { -1, 0, 1 };
             int[] direction = { directionHelper[rand.Next(0, 3)], directionHelper[rand.Next(0, 3)] };
-            
+            //nextCoord.
             
             for (int i = 0; i < steps; i++)
             {
@@ -160,6 +160,11 @@ namespace DWorld_2
         public int x { get; set; }
         public int y { get; set; }
         public string str_xy { get; set; }
+
+        private void DistributeChange(object sender, System.EventArgs e)
+        {
+            str_xy = ToStringPair(x, y);
+        }
 
         public Coordinates(int x_in,int y_in)
         {
