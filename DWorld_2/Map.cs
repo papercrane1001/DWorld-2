@@ -8,14 +8,17 @@ namespace DWorld_2
 {
     public class Map
     {
-        public VisibleMap visMap;
+        #region Public variables
+        public DMMap visMap;
         public List<List<Tile>> tLList = new List<List<Tile>>();
         public List<Tile> openSpace = new List<Tile>();
+        #endregion 
+
+        public Map() { }
 
         public Map(int xmax, int ymax, int steps, string type)
         {
             Random rand = new Random();
-            //rand.Next(i,j): i inclusive, j exclusive
 
             #region Create the map
             for (int i = 0; i < xmax; i++)
@@ -41,7 +44,7 @@ namespace DWorld_2
             #endregion
 
             #region Create Display
-            visMap = new VisibleMap(this);
+            visMap = new DMMap(this);
 
             #endregion
 
@@ -58,6 +61,7 @@ namespace DWorld_2
 
         }
 
+        #region Different methods for generating the map
         internal void InitCave(int xmax, int ymax, int steps)
         {
             Random rand = new Random();
@@ -105,21 +109,26 @@ namespace DWorld_2
                 this.tLList[nextCoord.x][nextCoord.y].isWall = false;
             }
         }
-    }
+        #endregion
 
-    public class Construction
-    {
-
+        public void RefreshMaps()
+        {
+            visMap.RefreshMap(this);
+            GlobalVars.Playerviewmap.RefreshMap(this);
+        }
     }
 
     public class Tile
     {
         public Coordinates coord;
         public bool isWall = true;
+        //neighbors is used primarily for map generation, but it may be useful for pathfinding later.
         public List<Coordinates> neighbors = new List<Coordinates>();
         public int[,] direction_ops = { { 1, 1 }, { 1, 0 }, { 1, -1 }, { 0, -1 }, { -1, -1 }, { -1, 0 }, { -1, 1 }, { 0, 1 } };
         public int x;
         public int y;
+        public bool isVisible = false;
+        public bool isViewed = false;
 
         public Tile(int x_in, int y_in)
         {
@@ -132,6 +141,7 @@ namespace DWorld_2
             y = coord.y;
         }
 
+        //Checks to see if the tile is on the edge of the allowable map, and if it is, then it removes the theoretical neighbors from neighbors.
         public void BorderCheck(int x_max,int y_max)
         {
             if (coord.x == x_max-2)
@@ -173,6 +183,7 @@ namespace DWorld_2
             str_xy = ToStringPair(x_in, y_in);
         }
 
+        //Not truly necessary, but when performing a deep copy, this constructor is useful.
         public Coordinates(string xy_str)
         {
             str_xy = xy_str;
@@ -198,6 +209,12 @@ namespace DWorld_2
         public string ToStringPair (int x_in, int y_in)
         {
             return x_in.ToString() + " " + y_in.ToString();
+        }
+
+        public void Delta(int dx, int dy)
+        {
+            this.x = this.x + dx;
+            this.y = this.y - dy;
         }
     }
 }
